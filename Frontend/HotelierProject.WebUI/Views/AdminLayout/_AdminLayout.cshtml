@@ -1,0 +1,47 @@
+@model dynamic
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+@await Component.InvokeAsync("AdminLayoutHeadComponent")
+
+<body>
+
+    @await Component.InvokeAsync("AdminLayoutPreloaderComponent")
+    
+    <div id="main-wrapper">
+
+        @await Component.InvokeAsync("AdminLayoutHeaderComponent")
+        
+        @await Component.InvokeAsync("AdminLayoutSidebarComponent")
+
+        <div class="content-body">
+
+            <div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
+                    </ol>
+                </div>
+            </div>
+            
+            @RenderBody()
+            <div class="container-fluid">
+        
+            </div>
+        </div>
+
+        @await Component.InvokeAsync("AdminLayoutFooterComponent")
+
+    </div>
+
+    @await Component.InvokeAsync("AdminLayoutScriptComponent")
+
+    </body>
+
+</html>
