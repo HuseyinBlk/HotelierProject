@@ -1,46 +1,57 @@
 using HotelierProject.Business.Abstract;
 using HotelierProject.DataAccess.Abstract;
 using HotelierProject.DataAccess.UnitOfWork;
+using HotelierProject.DTO.Abstract;
 using HotelierProject.Entity.Common;
+using Mapster;
 
 namespace HotelierProject.Business.Concrete;
 
-public class GenericManager<TEntity> : IGenericService<TEntity> where TEntity : BaseEntity
+public class GenericManager<TEntity,TResultDto, TCreateDto, TUpdateDto> : IGenericService<TResultDto, TCreateDto, TUpdateDto> where TEntity : BaseEntity where TUpdateDto : IBaseDto
 {
-    private readonly IGenericDal<TEntity> _genericDal;
-    private readonly IUnitOfWork _unitOfWork;
+    protected readonly IGenericDal<TEntity> GenericDal;
+    protected readonly IUnitOfWork UnitOfWork;
 
     public GenericManager(IGenericDal<TEntity> genericDal, IUnitOfWork unitOfWork)
     {
-        _genericDal = genericDal;
-        _unitOfWork = unitOfWork;
+        GenericDal = genericDal;
+        UnitOfWork = unitOfWork;
     }
 
-    public async Task InsertAsync(TEntity entity)
+    public async Task CreateAsync(TCreateDto createDto)
     {
-        await _genericDal.InsertAsync(entity);
-        await _unitOfWork.SaveChangesAsync();
+        var entity = createDto.Adapt<TEntity>();
+        await GenericDal.InsertAsync(entity);
+        await UnitOfWork.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(TEntity entity)
+    public async Task UpdateAsync(TUpdateDto updateDto)
     {
-        _genericDal.Update(entity);
-        await _unitOfWork.SaveChangesAsync();
+        var entity = await GenericDal.GetByIdAsync(updateDto.Id);
+        if (entity == null) return;
+        
+        updateDto.Adapt(entity);
+        GenericDal.Update(entity);
+        await UnitOfWork.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(TEntity entity)
+    public async Task DeleteAsync(int id)
     {
-        _genericDal.Delete(entity);
-        await _unitOfWork.SaveChangesAsync();
+        var entity = await GenericDal.GetByIdAsync(id);
+        if (entity == null) return;
+        GenericDal.Delete(entity);
+        await UnitOfWork.SaveChangesAsync();
     }
 
-    public async Task<List<TEntity>> GetAllAsync()
+    public async Task<List<TResultDto>> GetAllAsync()
     {
-        return await _genericDal.GetAllAsync();
+        var entities = await GenericDal.GetAllAsync();
+        return entities.Adapt<List<TResultDto>>();
     }
 
-    public async Task<TEntity?> GetByIdAsync(int id)
+    public async Task<TResultDto?> GetByIdAsync(int id)
     {
-        return await _genericDal.GetByIdAsync(id);
+        var entity = await GenericDal.GetByIdAsync(id);
+        return entity.Adapt<TResultDto>();
     }
 }

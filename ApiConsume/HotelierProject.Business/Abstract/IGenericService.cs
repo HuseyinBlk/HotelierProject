@@ -2,11 +2,11 @@ using HotelierProject.Entity.Common;
 
 namespace HotelierProject.Business.Abstract;
 
-public interface IGenericService<TEntity> where TEntity : BaseEntity
+public interface IGenericService<TResultDto, TCreateDto, TUpdateDto>
 {
-    Task InsertAsync(TEntity entity);
-    Task UpdateAsync(TEntity entity);
-    Task DeleteAsync(TEntity entity);
-    Task<List<TEntity>> GetAllAsync();
-    Task<TEntity?> GetByIdAsync(int id);
+    Task CreateAsync(TCreateDto createDto);
+    Task UpdateAsync(TUpdateDto updateDto);
+    Task DeleteAsync(int id);
+    Task<List<TResultDto>> GetAllAsync();
+    Task<TResultDto?> GetByIdAsync(int id);
 }

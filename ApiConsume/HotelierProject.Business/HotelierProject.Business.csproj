@@ -12,4 +12,10 @@
       <ProjectReference Include="..\HotelierProject.Entity\HotelierProject.Entity.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="12.2.0" />
+      <PackageReference Include="Mapster" Version="10.0.14" />
+      <PackageReference Include="Scrutor" Version="7.0.0" />
+    </ItemGroup>
+
 </Project>

@@ -1,21 +1,23 @@
-using HotelierProject.DataAccess.Concrete;
-using HotelierProject.DataAccess.Interceptors;
-using Microsoft.EntityFrameworkCore;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using HotelierProject.Business.Extensions;
+using HotelierProject.Business.Validators.RoomValidators;
+using HotelierProject.DataAccess.Extensions;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddControllers();
+
+//FluentValidation
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateRoomValidator>();
+
 builder.Services.AddOpenApi();
 
-builder.Services.AddScoped<AuditDbContextInterceptor>();
 
-builder.Services.AddDbContext<AppDbContext>((sp,options) =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"));
-    options.AddInterceptors(sp.GetRequiredService<AuditDbContextInterceptor>());
-});
+builder.Services.AddDataAccessServices(builder.Configuration);
+builder.Services.AddBusinessServices();
 
 var app = builder.Build();
 
@@ -28,5 +30,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
 
 app.Run();
