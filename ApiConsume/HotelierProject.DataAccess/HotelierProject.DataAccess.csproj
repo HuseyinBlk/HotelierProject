@@ -15,4 +15,8 @@
       <ProjectReference Include="..\HotelierProject.Entity\HotelierProject.Entity.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Repositories\" />
+    </ItemGroup>
+
 </Project>
