@@ -19,12 +19,12 @@ public class GenericRepository<TEntity> : IGenericDal<TEntity> where TEntity : B
         await _context.AddAsync(entity);
     }
 
-    public async Task UpdateAsync(TEntity entity)
+    public void Update(TEntity entity)
     {
         _context.Update(entity);
     }
 
-    public async Task DeleteAsync(TEntity entity)
+    public void Delete(TEntity entity)
     {
         _context.Remove(entity);
     }
