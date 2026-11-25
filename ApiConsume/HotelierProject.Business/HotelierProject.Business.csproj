@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\HotelierProject.DataAccess\HotelierProject.DataAccess.csproj" />
+      <ProjectReference Include="..\HotelierProject.DTO\HotelierProject.DTO.csproj" />
+      <ProjectReference Include="..\HotelierProject.Entity\HotelierProject.Entity.csproj" />
+    </ItemGroup>
+
+</Project>
