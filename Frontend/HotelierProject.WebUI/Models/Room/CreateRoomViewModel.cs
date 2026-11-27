@@ -1,0 +1,13 @@
+namespace HotelierProject.WebUI.Models.Room;
+
+public class CreateRoomViewModel
+{
+    public string RoomNumber { get; set; } = string.Empty;
+    public string RoomCoverImage { get; set; } = string.Empty;
+    public int Price { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string BedCount { get; set; } = string.Empty;
+    public string BathCount { get; set; } = string.Empty;
+    public string Wifi { get; set; } = string.Empty;
+}

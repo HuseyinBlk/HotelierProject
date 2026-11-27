@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using HotelierProject.Business.Extensions;
 using HotelierProject.Business.Validators.RoomValidators;
 using HotelierProject.DataAccess.Extensions;
+using HotelierProject.WebApi.Etensions;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +31,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(CorsServiceExtensions.DefaultCorsPolicy);
 app.UseAuthorization();
 app.MapControllers();
 
