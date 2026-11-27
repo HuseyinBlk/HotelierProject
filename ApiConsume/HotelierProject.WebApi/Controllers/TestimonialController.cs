@@ -6,26 +6,19 @@ namespace HotelierProject.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class TestimonialController : ControllerBase
+public class TestimonialController(ITestimonialService testimonialService) : ControllerBase
 {
-    private readonly ITestimonialService _testimonialService;
-
-    public TestimonialController(ITestimonialService testimonialService)
-    {
-        _testimonialService = testimonialService;
-    }
-
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var values = await _testimonialService.GetAllAsync();
+        var values = await testimonialService.GetAllAsync();
         return Ok(values);
     }
 
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var value = await _testimonialService.GetByIdAsync(id);
+        var value = await testimonialService.GetByIdAsync(id);
         if (value is null)
             return NotFound("Referans bulunamadı.");
 
@@ -35,21 +28,21 @@ public class TestimonialController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(CreateTestimonialDto createTestimonialDto)
     {
-        await _testimonialService.CreateAsync(createTestimonialDto);
-        return Ok("Referans başarıyla eklendi.");
+        await testimonialService.CreateAsync(createTestimonialDto);
+        return Created();
     }
 
     [HttpPut]
     public async Task<IActionResult> Update(UpdateTestimonialDto updateTestimonialDto)
     {
-        await _testimonialService.UpdateAsync(updateTestimonialDto);
-        return Ok("Referans başarıyla güncellendi.");
+        await testimonialService.UpdateAsync(updateTestimonialDto);
+        return NoContent();
     }
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        await _testimonialService.DeleteAsync(id);
-        return Ok("Referans başarıyla silindi.");
+        await testimonialService.DeleteAsync(id);
+        return NoContent();
     }
 }

@@ -5,37 +5,30 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HotelierProject.DataAccess.EntityFramework;
 
-public class GenericRepository<TEntity> : IGenericDal<TEntity> where TEntity : BaseEntity
+public class GenericRepository<TEntity>(AppDbContext context) : IGenericDal<TEntity> where TEntity : BaseEntity
 {
-    private readonly AppDbContext _context;
-    
-    public GenericRepository(AppDbContext context)
-    {
-        _context = context;
-    }
-    
     public async Task InsertAsync(TEntity entity)
     {
-        await _context.AddAsync(entity);
+        await context.Set<TEntity>().AddAsync(entity);
     }
 
     public void Update(TEntity entity)
     {
-        _context.Update(entity);
+        context.Set<TEntity>().Update(entity);
     }
 
     public void Delete(TEntity entity)
     {
-        _context.Remove(entity);
+        context.Set<TEntity>().Remove(entity);
     }
 
     public async Task<List<TEntity>> GetAllAsync()
     {
-        return await _context.Set<TEntity>().AsNoTracking().ToListAsync();
+        return await context.Set<TEntity>().AsNoTracking().ToListAsync();
     }
 
     public async Task<TEntity?> GetByIdAsync(int id)
     {
-        return await _context.Set<TEntity>().FindAsync(id);
+        return await context.Set<TEntity>().FindAsync(id);
     }
 }

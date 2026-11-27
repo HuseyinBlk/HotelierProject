@@ -7,4 +7,14 @@
         <UserSecretsId>39d5ee66-721d-491c-8a1e-9290f4732b52</UserSecretsId>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Areas\Admin\Data\" />
+      <Folder Include="Areas\Admin\Models\" />
+      <Folder Include="Areas\Admin\Views\" />
+    </ItemGroup>
+
 </Project>

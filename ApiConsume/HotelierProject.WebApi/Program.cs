@@ -19,6 +19,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDataAccessServices(builder.Configuration);
 builder.Services.AddBusinessServices();
+builder.Services.AddCustomCors();
 
 var app = builder.Build();
 

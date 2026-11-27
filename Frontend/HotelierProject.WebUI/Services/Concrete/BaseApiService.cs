@@ -1,32 +1,46 @@
 using System.Net;
+using System.Net.Http.Json;
 using HotelierProject.WebUI.Models;
 using HotelierProject.WebUI.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelierProject.WebUI.Services.Concrete;
 
-public class BaseApiService<TResult,TCreate,TUpdate>(HttpClient httpClient, string endpoint)  : IBaseApiService<TResult,TCreate,TUpdate>
+public class BaseApiService<TResult, TCreate, TUpdate>(HttpClient httpClient, string endpoint) 
+    : IBaseApiService<TResult, TCreate, TUpdate>
 {
-    protected readonly HttpClient HttpClient = httpClient;
-
     public async Task<List<TResult>> GetAllAsync()
     {
-        return await HttpClient.GetFromJsonAsync<List<TResult>>(endpoint) ?? new List<TResult>();
+        return await httpClient.GetFromJsonAsync<List<TResult>>(endpoint) ?? new List<TResult>();
     }
 
     public async Task<TResult?> GetByIdAsync(int id)
     {
-        return await HttpClient.GetFromJsonAsync<TResult>($"{endpoint}/{id}");
+        var response = await httpClient.GetAsync($"{endpoint}/{id}");
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            return default;
+        }
+
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadFromJsonAsync<TResult>();
     }
 
     public async Task<TUpdate?> GetByIdForUpdateAsync(int id)
     {
-        return await HttpClient.GetFromJsonAsync<TUpdate>($"{endpoint}/{id}");
+        var response = await httpClient.GetAsync($"{endpoint}/{id}");
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            return default;
+        }
+
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadFromJsonAsync<TUpdate>();
     }
 
     public async Task<ApiResult> CreateAsync(TCreate dto)
     {
-        var response = await HttpClient.PostAsJsonAsync(endpoint, dto);
+        var response = await httpClient.PostAsJsonAsync(endpoint, dto);
         if (response.IsSuccessStatusCode)
         {
             return ApiResult.Success();
@@ -34,7 +48,7 @@ public class BaseApiService<TResult,TCreate,TUpdate>(HttpClient httpClient, stri
 
         if (response.StatusCode == HttpStatusCode.BadRequest)
         {
-            var problemDetails = await  response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            var problemDetails = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
             return ApiResult.Fail(problemDetails?.Errors);
         }
         
@@ -43,7 +57,7 @@ public class BaseApiService<TResult,TCreate,TUpdate>(HttpClient httpClient, stri
 
     public async Task<ApiResult> UpdateAsync(TUpdate dto)
     {
-        var response = await HttpClient.PutAsJsonAsync(endpoint, dto);
+        var response = await httpClient.PutAsJsonAsync(endpoint, dto);
         if (response.IsSuccessStatusCode)
         {
             return ApiResult.Success();
@@ -51,7 +65,7 @@ public class BaseApiService<TResult,TCreate,TUpdate>(HttpClient httpClient, stri
 
         if (response.StatusCode == HttpStatusCode.BadRequest)
         {
-            var problemDetails = await  response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            var problemDetails = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
             return ApiResult.Fail(problemDetails?.Errors);
         }
         
@@ -60,7 +74,7 @@ public class BaseApiService<TResult,TCreate,TUpdate>(HttpClient httpClient, stri
 
     public async Task<bool> DeleteAsync(int id)
     {
-        var response = await HttpClient.DeleteAsync($"{endpoint}/{id}");
+        var response = await httpClient.DeleteAsync($"{endpoint}/{id}");
         return response.IsSuccessStatusCode;
     }
 }

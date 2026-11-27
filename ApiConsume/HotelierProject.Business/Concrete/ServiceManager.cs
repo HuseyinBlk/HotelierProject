@@ -6,9 +6,5 @@ using HotelierProject.Entity.Concrete;
 
 namespace HotelierProject.Business.Concrete;
 
-public class ServiceManager : GenericManager<Service, ResultServiceDto, CreateServiceDto, UpdateServiceDto>, IServiceService
-{
-    public ServiceManager(IServiceDal serviceDal, IUnitOfWork unitOfWork) : base(serviceDal, unitOfWork)
-    {
-    }
-}
+public class ServiceManager(IServiceDal serviceDal, IUnitOfWork unitOfWork) 
+    : GenericManager<Service, ResultServiceDto, CreateServiceDto, UpdateServiceDto>(serviceDal, unitOfWork), IServiceService;

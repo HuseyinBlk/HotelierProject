@@ -2,18 +2,10 @@ using HotelierProject.DataAccess.Concrete;
 
 namespace HotelierProject.DataAccess.UnitOfWork;
 
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork(AppDbContext context) : IUnitOfWork
 {
-    private readonly AppDbContext _context;
-    
-    public UnitOfWork(AppDbContext context)
-    {
-        _context = context;
-        
-    }
-    
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.SaveChangesAsync(cancellationToken);
+        return await context.SaveChangesAsync(cancellationToken);
     }
 }

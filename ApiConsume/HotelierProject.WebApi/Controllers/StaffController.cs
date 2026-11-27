@@ -6,26 +6,19 @@ namespace HotelierProject.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class StaffController : ControllerBase
+public class StaffController(IStaffService staffService) : ControllerBase
 {
-    private readonly IStaffService _staffService;
-
-    public StaffController(IStaffService staffService)
-    {
-        _staffService = staffService;
-    }
-
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var values = await _staffService.GetAllAsync();
+        var values = await staffService.GetAllAsync();
         return Ok(values);
     }
 
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var value = await _staffService.GetByIdAsync(id);
+        var value = await staffService.GetByIdAsync(id);
         if (value is null)
             return NotFound("Personel bulunamadı.");
 
@@ -35,21 +28,21 @@ public class StaffController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(CreateStaffDto createStaffDto)
     {
-        await _staffService.CreateAsync(createStaffDto);
-        return Ok("Personel başarıyla eklendi.");
+        await staffService.CreateAsync(createStaffDto);
+        return Created();
     }
 
     [HttpPut]
     public async Task<IActionResult> Update(UpdateStaffDto updateStaffDto)
     {
-        await _staffService.UpdateAsync(updateStaffDto);
-        return Ok("Personel başarıyla güncellendi.");
+        await staffService.UpdateAsync(updateStaffDto);
+        return NoContent();
     }
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        await _staffService.DeleteAsync(id);
-        return Ok("Personel başarıyla silindi.");
+        await staffService.DeleteAsync(id);
+        return NoContent();
     }
 }

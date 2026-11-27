@@ -6,9 +6,5 @@ using HotelierProject.Entity.Concrete;
 
 namespace HotelierProject.Business.Concrete;
 
-public class SubscribeManager : GenericManager<Subscribe, ResultSubscribeDto, CreateSubscribeDto, UpdateSubscribeDto>, ISubscribeService
-{
-    public SubscribeManager(ISubscribeDal subscribeDal, IUnitOfWork unitOfWork) : base(subscribeDal, unitOfWork)
-    {
-    }
-}
+public class SubscribeManager(ISubscribeDal subscribeDal, IUnitOfWork unitOfWork) 
+    : GenericManager<Subscribe, ResultSubscribeDto, CreateSubscribeDto, UpdateSubscribeDto>(subscribeDal, unitOfWork), ISubscribeService;
