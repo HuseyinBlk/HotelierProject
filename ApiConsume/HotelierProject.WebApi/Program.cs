@@ -28,10 +28,9 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
-    app.MapGet("/", () => Results.Redirect("/scalar/v1"));
 }
 
-app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseCors(CorsServiceExtensions.DefaultCorsPolicy);
 app.UseAuthorization();
 app.MapControllers();

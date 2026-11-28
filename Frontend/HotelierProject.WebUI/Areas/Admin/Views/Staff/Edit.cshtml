@@ -1,0 +1,104 @@
+@model UpdateStaffViewModel
+
+@{
+    ViewBag.Title = "Personel Güncelle";
+}
+
+<div class="row page-titles mx-0 mb-4">
+    <div class="col-sm-6 p-md-0">
+        <div class="welcome-text">
+            <h4>Personel Güncelleme</h4>
+            <p class="mb-0">Mevcut Personeli Güncelleyin</p>
+        </div>
+    </div>
+    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+        <a asp-area="Admin" asp-controller="Staff" asp-action="Index" class="btn btn-outline-secondary d-inline-flex align-items-center">
+            <i class="fa fa-arrow-left mr-2"></i> Listeye Dön
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Personel Bilgileri</h4>
+
+                <form asp-area="Admin" asp-controller="Staff" asp-action="Edit" method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                    <input type="hidden" asp-for="Id"/>
+                    <input type="hidden" asp-for="ImageUrl" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Name" class="font-weight-bold text-dark">Ad Soyad</label>
+                            <input asp-for="Name" class="form-control" placeholder="Örn: Ahmet Yılmaz" autofocus />
+                            <span asp-validation-for="Name" class="text-danger small font-weight-bold"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label asp-for="Title" class="font-weight-bold text-dark">Unvan / Pozisyon</label>
+                            <input asp-for="Title" class="form-control" placeholder="Örn: Genel Müdür / Resepsiyon Şefi" />
+                            <span asp-validation-for="Title" class="text-danger small font-weight-bold"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Photo" class="font-weight-bold text-dark">Profil Fotoğrafı</label>
+                        <div class="custom-file">
+                            <input asp-for="Photo" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png,.webp" id="customFile" />
+                            <label class="custom-file-label" for="customFile">Fotoğraf seçiniz (Max 5 MB)</label>
+                        </div>
+                        <small class="form-text text-muted">İzin verilen formatlar: .jpg, .jpeg, .png, .webp</small>
+                    </div>
+
+                    <hr class="my-4" />
+                    <h5 class="text-muted mb-3 font-weight-bold"><i class="fa fa-share-alt mr-2"></i>Sosyal Medya Hesapları</h5>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="SocialMedia1" class="font-weight-bold text-dark">Instagram</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-instagram text-primary"></i></span>
+                                </div>
+                                <input asp-for="SocialMedia1" class="form-control" placeholder="Instagram kullanıcı adı / link" />
+                            </div>
+                            <span asp-validation-for="SocialMedia1" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label asp-for="SocialMedia2" class="font-weight-bold text-dark">LinkedIn</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-linkedin text-info"></i></span>
+                                </div>
+                                <input asp-for="SocialMedia2" class="form-control" placeholder="LinkedIn profil bağlantısı" />
+                            </div>
+                            <span asp-validation-for="SocialMedia2" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label asp-for="SocialMedia3" class="font-weight-bold text-dark">Twitter / X</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-twitter text-primary"></i></span>
+                                </div>
+                                <input asp-for="SocialMedia3" class="form-control" placeholder="Twitter / X kullanıcı adı" />
+                            </div>
+                            <span asp-validation-for="SocialMedia3" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-4 mb-0 text-right">
+                        <a asp-area="Admin" asp-controller="Staff" asp-action="Index" class="btn btn-light px-4 mr-2">Vazgeç</a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="fa fa-save mr-1"></i> Kaydet
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
